@@ -1,823 +1,707 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Chat App</title>
-
-
-		<link href="https://fonts.googleapis.com/css2?
-		family=Material+Symbols+Outlined:opaz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
-
-		<style>
-
-			:root {
-				--bg-darker: #0f1115;
-				--bg-dark: #161920;
-				--bg-panel: #1e222b;
-				--accent: #5c67f2;
-				--text-main: #f1f1f1;
-				--text-main: #f1f1f1;
-				--text-muted: #9ca3af;
-				--danger: #ef4444;
-				--main-img: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2000&auto=format&fit=crop');
-			}
-
-
-			* {
-				margin: 0;
-				padding: 0;
-				box-sizing: border-box;
-				font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-			}
-
-
-			body {
-				background-color: var(--bg-darker);
-				color: var(--text-main);
-				height: 100vh;
-				overflow: hidden;
-
-			}
-
-			button {
-				cursor: pointer;
-				border: none;
-				background: none;
-				color: inherit;
-				font-family: inherit;
-			}
-
-
-			.hidden {
-				display: none !important;
-			}
-
-			.screen {
-				width: 100vw;
-				height: 100vh;
-
-			}
-
-			#welcome-screen {
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				justify-content: flex-end;
-
-				padding-bottom: 10vh;
-
-			}
-
-			.welcome-img {
-				width: 250px;
-				height: 250px;
-				object-fit: cover;
-				border-radius: 20px;
-				margin-bottom: 60px;
-				box-shadow: 0 15px 35px rgba(92, 103, 242, 0.2);
-
-			}
-
-
-			.btn-primary {
-				padding: 16px 48px;
-				background-color: var(--accent);
-				color: white;
-				font-size: 1.2rem;
-				font-weight: bold;
-				border-radius: 50px;
-				transition: transform 0.2s background 0.2s;
-
-			}
-
-			.btn-primary:hover {
-				background-color: var(--accent-hover);
-				transform: scale(1.05);
-			}
-
-
-			#dialogue-screen {
-				display: flex;
-				flex-direction: column;
-			}
-
-
-			.dialogue-top {
-				height: 50vh;
-				padding: 40px;
-				display: flex;
-				align-items: flex-end;
-
-
-			}
-
-
-			.dialogue-img {
-				width: 200px;
-				height: 200px;
-				object-fit: cover;
-				border: 4px solid var(--bg-panel);
-				box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-
-			}
-
-
-			.dialogue-bottom {
-				height: 50vh;
-				background-color: var(--bg-panel);
-				border-top: 5px solid var(--accent);
-				padding: 40px;
-				position: relative;
-			}
-
-
-			.dialogue-name {
-				color: var(--accent);
-				font-size: 1.5rem;
-				margin-bottom: 15px;
-
-			}
-
-
-			.dialogue-text {
-				font-size: 1.8rem;
-				line-height: 1.5;
-				font-family: Georgia, serif;
-			}
-
-
-			.dialogue-controls {
-				position: absolute;
-				bottom: 40px;
-				right: 40px;
-				display: flex;
-				gap: 15px;
-
-			}
-
-
-			.btn-secondary {
-				padding: 12px 24px;
-				background-color: var(--bg-hover);
-				border-radius: 8px;
-				font-weight: bold;
-			}
-
-
-
-			.btn-secondary:hover {
-				background-color: #373e4d;
-			}
-
-
-			#main-screen {
-				display: flex;
-			}
-
-
-			.taskbar {
-
-				   
-				width: 80px;
-				background-color: var(--bg-darker);
-				border-right: 1px solid var(--bg-hover);
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				padding: 20px 0;
-				z-index: 50;
-			}
-
-
-			.logo {
-				width: 48px;
-				height: 48px;
-				background-color: var(--accent);
-				border-radius: 12px;
-				display: flex;
-				align-items: center;
-
-				justify-content: center;
-				margin-bottom: 30px;
-			}
-
-			.nav-btn {
-				width: 50px;
-				height: 50px;
-				border-radius: 12px;
-				color: var(--text-muted);
-				display: flex;
-				align-items: center;
-				margin-bottom: 15px;
-				position: relative;
-				transition: 0.2s;
-			}
-
-
-			.nav-btn:hover {
-				background-color: vr(--bg-panel);
-				color: white;
-			}
-
-
-			.nav-btn::after {
-				content: attr(data-name);
-				position: absolute;
-				left: 70px;
-				background-color: var(--bg-darker);
-				border: 1px solid var(--bg-hover);
-
-				padding: 6px 12px;
-				border-radius: 6px;
-				font-size: 0.85rem;
-				white-space: nowrap;
-				opacity: 0;
-				pointer-events: none;
-				transition: 0.2s;
-				z-index: 100;
-
-			}
-
-			.nav-btn:hover::after {
-				opacity: 1;
-
-			}
-
-
-			.settings-overlay {
-				position: absolute;
-				left: 80px;
-				top: 0;
-				bottom: 0;
-				width: 320px;
-				background-color: var(--bg-dark);
-
-				border-right: 1px solid var(--bg-hover);
-				padding: 30px;
-				z-index: 40;
-				box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
-				transform: translateX(-100%);
-				transition: transform 0.3s ease;
-
-			}
-
-
-			.settings-overlay.open {
-				transform: translateX(0);
-
-			}
-
-
-			.settings-block {
-				background-color: var(--bg-panel);
-				padding: 15px;
-				border-radius: 10px;
-				margin-bottom: 20px;
-
-			}
-
-
-			.settings-row {
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
-				margin-bottom: 10px;
-
-			}
-
-
-			.settings-row .material-symbols-outlined { font-size: 18px; margin-right: 8px; }
-
-			.theme-circle {
-				width: 30px;
-				height: 30px;
-				border-radius: 50%;
-				cursor: pointer;
-				margin-bottom: 10px ; display: flex;
-				align-items: center; gap: 10px;
-
-			}
-
-			.action-btn:hover { background-color: var(--bg-hover); }
-			.btn-danger {
-				color: var(--danger);
-
-			}
-
-			.btn-danger:hover { background-color: rgba(239, 68, 68, 0.1);}
-
-
-			.chat-list-panel {
-				width: 300px;
-				background-color: var(--bg-dark);
-				border-right: 1px solid var(--bg-hover);
-				display: flex;
-
-				flex-direction: column;
-				z-index: 30;
-			}
-
-			.chat-list-header {
-				padding: 24px;
-				border-bottom: 1px solid var(--bg-hover);
-				font-size: 1.2rem;
-
-				font-weight: bold;
-			}
-
-			.chat-items {
-				display: flex;
-				align-items: center;
-				padding: 12px;
-				border-radius: 10px;
-				margin-bottom: 5px;
-				position: relative;
-
-			}
-
-			.chat-item:hover {
-				background-color: var(--bg-hover);
-
-			}
-
-
-			.chat-item.you-dm {
-				background-color: rgba(92, 103, 242, 0.15);
-				border: 1px solid rgba(92, 103, 242, 0.3);
-
-			}
-
-
-			.avatar {
-				width: 40px;
-
-				height: 40px;
-				border-radius: 50%;
-				background-color: var(--bg-panel);
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				margin-right: 12px;
-				font-weight: bold;
-
-
-			}
-
-			.you-dm .avatar { background-color: var(--accent); }
-
-			.chat-info h4 { font-size: 0.95rem; 
-			margin-bottom: 4px; }
-			.chat-info p { font-size: 0.8rem; color: var(--test-muted); }
-
-			.dots-btn {
-				margin-left: auto;
-				color: var(--text-muted);
-				opacity: 0;
-
-			}
-
-			.chat-item:hover .dots-btn {opacity : 1;}
-
-			.dots-dropdown {
-				position: absolute;
-				right: 10px;
-				top: 40px;
-				background-color: var(--bg-panel) ;
-				border: 1px solid var(--bg-hover);
-				border: 1px solid var(--bg-hover);
-
-				border-radius: 8px;
-				width: 120px;
-				display: none;
-
-				flex-direction: column;
-				box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-				z-index: 100;
-
-			}
-
-
-			.dots-dropdown.show { display: flex;}
-			.dots-dropdown button {padding: 10px 15px; 
-			text-align: left; font-size: 0.9rem;}
-
-			.dots-dropdown button:hover {background-color: var(--bg-hover); }
-			
-			.chat-area {
-				flex: 1;
-				display: flex;
-				flex-direction: column;
-				position: relative;
-
-			}
-
-			.chat-bg {
-				position: absolute;
-				top: 0; 
-				left: 0;
-				right: 0;
-				bottom: 0;
-				background-image: var(--main-img);
-				background-position: center;
-				background-size: cover;
-
-				opacity: 0.15;
-				pointer-events: none;
-
-				z-index: 1;
-			}
-
-
-			.chat-header {
-
-				height: 70px;
-				background-color: rgba(22, 25, 32, 0.8);
-				backdrop-filter: blur(10px);
-				border-bottom: 1px solid var(--bg-hover);
-
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				padding: 0 30px;
-				z-index: 10;
-
-			}
-
-
-			.dm-setting-dropdown {
-				position: absolute;
-				right: 30px;
-				top: 60px;
-				background-color: var(--bg-panel);
-				padding: 15px;
-				border-radius: 10px;
-
-				border: 1px solid var(--bg-hover);
-				display: none;
-			}
-
-			.dm-settings-dropdown.show { display: block;}
-
-			.messages-container {
-				flex: 1;
-				padding: 30px;
-				display: flex;
-				flex-direction: column;
-
-				justify-content: flex-end;
-
-				gap: 15px;
-				z-index: 10;
-			}
-
-
-
-			.message {
-				background-color: var(--accent);
-				padding: 15px 20px;
-				border-radius: 20px 20px 0 20px;
-				max-width: 60%;
-				align-self: flex-end;
-
-				box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-			}
-
-			.input-area {
-				padding: 20px 30px;
-
-				z-index: 10;
-
-			}
-
-			.input-box {
-				background-color: rgba(30, 34, 43, 0.8);
-				backdrop-filter: blur(5px);
-				border: 1px solid var(--bg-hover);
-
-				border-radius: 50px;
-				align-items: center;
-				padding: 5px 10px;
-			}
-
-
-			.input-box input {
-				flex: 1;
-
-				background: none;
-				border: none;
-
-				color: white;
-
-				padding: 10px 15px;
-				outline: none;
-			}
-
-			.send-btn {
-				width: 40px ;
-				height: 40px;
-				background-color: var(--accent);
-				border-radius: 50%;
-
-				display: flex; align-items: center;
-				justify-content: center;
-
-			}
-
-
-
-
-			
-		</style>
-	</head>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat App</title>
+  
+  <!--  google Material icons 4 da UI -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
+
+  <style>
+   
+
+    :root {
+
+      --bg-darker: #0f1115;
+      --bg-dark: #161920;
+      --bg-panel: #1e222b;
+      --bg-hover: #2a2f3a;
+      --accent: #5c67f2;
+      --accent-hover: #4a54c4;
+      --text-main: #f1f1f1;
+      --text-muted: #9ca3af;
+      --danger: #ef4444;
+
+      --main-img: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2000&auto=format&fit=crop');
+    }
+
+	
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+
+    body {
+      background-color: var(--bg-darker);
+      color: var(--text-main);
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    button {
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: inherit;
+      font-family: inherit;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .screen {
+      width: 100vw;
+      height: 100vh;
+    }
+
+    
+    #welcome-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding-bottom: 10vh;
+    }
+
+
+
+    .welcome-img {
+      width: 250px;
+      height: 250px;
+      object-fit: cover;
+      border-radius: 20px;
+      margin-bottom: 60px; 
+      box-shadow: 0 15px 35px rgba(92, 103, 242, 0.2);
+    }
+
+    .btn-primary {
+      padding: 16px 48px;
+      background-color: var(--accent);
+      color: white;
+      font-size: 1.2rem;
+      font-weight: bold;
+      border-radius: 50px;
+      transition: transform 0.2s, background 0.2s;
+    }
+    .btn-primary:hover {
+      background-color: var(--accent-hover);
+      transform: scale(1.05);
+    }
+
+  
+    #dialogue-screen {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .dialogue-top {
+      height: 50vh;
+      padding: 40px;
+      display: flex;
+      align-items: flex-end;
+    }
+
+    .dialogue-img {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 15px;
+      border: 4px solid var(--bg-panel);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .dialogue-bottom {
+      height: 50vh;
+      background-color: var(--bg-panel);
+      border-top: 5px solid var(--accent);
+      padding: 40px;
+      position: relative;
+    }
+
+    .dialogue-name {
+      color: var(--accent);
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+    }
+
+    .dialogue-text {
+      font-size: 1.8rem;
+      line-height: 1.5;
+      font-family: Georgia, serif;
+    }
+
+    .dialogue-controls {
+      position: absolute;
+      bottom: 40px;
+      right: 40px;
+      display: flex;
+      gap: 15px;
+    }
+
+    .btn-secondary {
+      padding: 12px 24px;
+      background-color: var(--bg-hover);
+      border-radius: 8px;
+      font-weight: bold;
+    }
+    .btn-secondary:hover {
+      background-color: #373e4d;
+    }
+
+   
+    #main-screen {
+      display: flex;
+    }
+
+   
+    .taskbar {
+      width: 80px;
+      background-color: var(--bg-darker);
+      border-right: 1px solid var(--bg-hover);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 0;
+      z-index: 50;
+    }
+
+    .logo {
+      width: 48px;
+      height: 48px;
+      background-color: var(--accent);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+
+    .nav-btn {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 15px;
+      position: relative;
+      transition: 0.2s;
+    }
+
+    .nav-btn:hover {
+      background-color: var(--bg-panel);
+      color: white;
+    }
+
+    
+    .nav-btn::after {
+      content: attr(data-name);
+      position: absolute;
+      left: 70px;
+      background-color: var(--bg-darker);
+      border: 1px solid var(--bg-hover);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.2s;
+      z-index: 100;
+    }
+    .nav-btn:hover::after {
+      opacity: 1;
+    }
+
+    
+    .settings-overlay {
+      position: absolute;
+      left: 80px;
+      top: 0;
+      bottom: 0;
+      width: 320px;
+      background-color: var(--bg-dark);
+      border-right: 1px solid var(--bg-hover);
+      padding: 30px;
+      z-index: 40;
+      box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+    }
+    .settings-overlay.open {
+      transform: translateX(0);
+    }
+
+    .settings-block {
+      background-color: var(--bg-panel);
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    .settings-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .settings-row .material-symbols-outlined { font-size: 18px; margin-right: 8px;}
+    
+    .theme-circle { width: 30px; height: 30px; border-radius: 50%; cursor: pointer;}
+    .action-btn { width: 100%; text-align: left; padding: 12px; border-radius: 8px; margin-bottom: 10px; display: flex; align-items: center; gap: 10px;}
+    .action-btn:hover { background-color: var(--bg-hover); }
+    .btn-danger { color: var(--danger); }
+    .btn-danger:hover { background-color: rgba(239, 68, 68, 0.1); }
+
+   
+    .chat-list-panel {
+      width: 300px;
+      background-color: var(--bg-dark);
+      border-right: 1px solid var(--bg-hover);
+      display: flex;
+      flex-direction: column;
+      z-index: 30;
+    }
+
+    .chat-list-header {
+      padding: 24px;
+      border-bottom: 1px solid var(--bg-hover);
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    .chat-items {
+      padding: 10px;
+      overflow-y: auto;
+    }
+
+    .chat-item {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      border-radius: 10px;
+      margin-bottom: 5px;
+      position: relative;
+    }
+    .chat-item:hover {
+      background-color: var(--bg-hover);
+    }
+
+    .chat-item.you-dm {
+      background-color: rgba(92, 103, 242, 0.15);
+      border: 1px solid rgba(92, 103, 242, 0.3);
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: var(--bg-panel);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 12px;
+      font-weight: bold;
+    }
+    .you-dm .avatar { background-color: var(--accent); }
+
+    .chat-info h4 { font-size: 0.95rem; margin-bottom: 4px; }
+    .chat-info p { font-size: 0.8rem; color: var(--text-muted); }
+
+    /*for Menu */
+    .dots-btn {
+      margin-left: auto;
+      color: var(--text-muted);
+      opacity: 0;
+    }
+    .chat-item:hover .dots-btn { opacity: 1; }
+    
+    .dots-dropdown {
+      position: absolute;
+      right: 10px;
+      top: 40px;
+      background-color: var(--bg-panel);
+      border: 1px solid var(--bg-hover);
+      border-radius: 8px;
+      width: 120px;
+      display: none;
+      flex-direction: column;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+      z-index: 100;
+    }
+    .dots-dropdown.show { display: flex; }
+    .dots-dropdown button { padding: 10px 15px; text-align: left; font-size: 0.9rem;}
+    .dots-dropdown button:hover { background-color: var(--bg-hover); }
+
+ 
+    .chat-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    
+    .chat-bg {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: var(--main-img);
+      background-size: cover;
+      background-position: center;
+      opacity: 0.15; 
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .chat-header {
+      height: 70px;
+      background-color: rgba(22, 25, 32, 0.8);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--bg-hover);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+      z-index: 10;
+    }
+
+    .dm-settings-dropdown {
+      position: absolute;
+      right: 30px;
+      top: 60px;
+      background-color: var(--bg-panel);
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid var(--bg-hover);
+      display: none;
+
+    }
+    .dm-settings-dropdown.show { display: block; }
+
+
+    .messages-container {
+      flex: 1;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      gap: 15px;
+      z-index: 10;
+    }
+
+    .message {
+
+      background-color: var(--accent);
+      padding: 15px 20px;
+      border-radius: 20px 20px 0 20px;
+      max-width: 60%;
+      align-self: flex-end;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .input-area {
+      padding: 20px 30px;
+      z-index: 10;
+    }
+
+    .input-box {
+      background-color: rgba(30, 34, 43, 0.8);
+      backdrop-filter: blur(5px);
+      border: 1px solid var(--bg-hover);
+      border-radius: 50px;
+      display: flex;
+      align-items: center;
+      padding: 5px 10px;
+    }
+
+
+    .input-box input {
+
+      flex: 1;
+      background: none;
+      border: none;
+      color: white;
+      padding: 10px 15px;
+      outline: none;
+
+    }
+    .send-btn {
+
+
+      width: 40px; height: 40px;
+      background-color: var(--accent);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+
+    }
+  </style>
+</head>
 <body>
 
-
-<div id="welcome-screen" class="screen">
-	<img src="https://images.unsplash.com/photo-1618005182384-a83e8bd57fbe?
-	q=80&w=2000&auto=format&fit=crap" class="welcome-img" alt="Welcome Image">
-
-	<button class="btn-primary" onclick="showScreen('dialogue-screen')">Continue</button>
-
-</div>
-
-<div id="dialogue-screen" class="screen hidden">
-	<div class="dialogue-top">
-		<img src="https://images.unsplash.com/photo-161805182384-a83e8bd57fbe?
-		q=80&w=2000&auto=format&fit=crop" class="dialogue-img" alt="Character">
-	</div>
-
-	<div class="dialogue-bottom">
-		<h3 class="dialogue-name">Mysterious Entity</h3>
-		<p class="dialogue-name">Welcome to the interface You have finally arrived we have much to discuss but first you must enter the system...</p>
-
-		<div class="dialogue-controls">
-			<button class="btn-secondary" id="speed-btn" onclick="changeSpeed()">Speed: 1x</button>
-			<button class="btn-primary" style="padding: 12px 24px;"
-		onclick="showScreen('main-screen')">Continue Ahead</button>
-		</div>
-	</div>
-</div>
-
-<div id="main-screen" class="screen hidden">
-
-	<div class="taskbar">
-		<div class="logo">
-			<span class="material-symbols-outlined">forum</span>
-		</div>
-
-		<button class="nav-btn" data-name="Explore" onclick="alert('Explore Public Groups')">
-			<span class="material-symbols-outlined"> music_note</span>
-		</button>
-
-
-		<button class="nav-btn" data-name="Settings" onclick="toggleSettings()">
-			<span class="material-symbols-outlined">settings</span>
-		</button>
-
-
-		<button class="nav-btn" data-name="Reels" onclick="alert('Reels coming soon')">
-			<span class="material-symbols-outlined">movie</span>
-		</button>
-
-	</div>
-
-	<div id="setting-overlay" class="settings-overlay">
-		<h2 style="margin-bottom: 25px;">Settings</h2>
-
-		<div class="settings-block">
-			<h4 style="color: var(--text-muted); margin-bottom: 15px; font-size: 0.8rem;">SOCIAL STATS</h4>
-			<div class="settings-row">
-				<span style="display: flex; align-items: center;">
-					<span class="material-symbols-outlined">group</span>
-					Friends
-				</span>
-
-				<span style="background: var(--accent); padding: 2px 8px; border-radius: 5px; font-size: 0.8rem;">42</span>
-			</div>
-
-			
-		</div>
-
-		<div class="setting-row" style="color: var(--danger);">
-			<span style="display: flex; align-items: center;">
-				<span class="material-symbols-outlined">person_off</span>Blocked
-			</span>
-
-			<span style="background: rgba(239, 68, 68, 0.2); padding: 2px 8px ;
-			border-radius: 5px; font-size: 0.8rem;">3</span>
-		</div>
-	</div>
-
-	<div class="settings-block">
-		<h4 style="color: var(--text-muted); margin-bottom: 15px ; font-size: 0.8rem;">GENERAL THEMES</h4>
-
-		<div style="display: flex; gap: 10px;">
-			<div class="theme-circle" style="background: #0f1115; border: 2px solid var(--accent);">
-				<div class="theme-circle" style="background: #ffffff; ">
-					<style class="theme-circle" style="background: #1e293b;">
-
-					</style>
-				</div>
-			</div>
-
-			<div style="margin-top: 40px;">
-				<button class="active-btn">
-					<span class="material-symbols-outlined">logout</span>
-					Logout
-				</button>
-
-				<button class="active-btn btn-danger">
-					<span class="material-symbols-outlined">delete_forever</span> Delete Account
-				</button>
-
-			</div>
-		</div>
-
-		<div class="chat-list-panel">
-			<div class="chat-list-header">Messages</div>
-
-			<div class="chat-items">
-				<div class="chat-item you-dm" style="cursor: pointer;">
-
-					<div class="avatar">Y</div>
-					<div class="chat-info">
-						<h4>You</h4>
-						<p>Notes to self...</p>
-
-					</div>
-				</div>
-
-				<div class="chat-item">
-					<div class="avatar">A</div>
-
-					<div class="chat-info">
-
-						<h4>Alex</h4>
-						<p> Hey are you there?</p>
-					</div>
-
-					<button class="dots-btn" onclick="toggleDotsMenu('menu-1', event)">
-
-						<span class="material-symbols-outlined">more_vert</span>
-
-					</button>
-
-					<div id="menu-1" class="dots-dropdown">
-						<button>Mute</button>
-						<button style="color:var(--danger)">Delete</button>
-
-						<button style="color: var(--dander); font-weight: bold;">Block</button>
-					</div>
-				</div>
-
-
-				<div class="chat-item">
-					<div class="avatar">S</div>
-					<div class="chat-info">
-						<h4>Sara</h4>
-						<p>Let me know!</p>
-
-					</div>
-
-					<button class="dots-btn" onclick="toggleDotsMenu('menu-2', event)">
-						<span class="material-symbols-outlined">more_vert</span>
-					</button>
-
-
-					<div id="menu-2" class="dots-dropdown">
-						<button>Mute</button>
-
-						<button style="color: var(--danger)">Delete</button>
-						<button style="color:var(--danger); font-weight: bold;">Block</button>
-					</div>
-				</div>
-
-
-			</div>
-		</div>
-
-		<div class="chat-area">
-
-			<div class="chat-bg" id="chat-bg-layer">
-				<div class="cht-header">
-					<div style="display: flex; align-items: center; gap: 15px;">
-						<div class="avatar" style="background: var(--acent); margin: 0;">Y</div>
-					</div>
-
-					<h3 style="font-size: 1.1rem;">You</h3>
-
-
-					<p style="font-size: 0.8rem; color: var(--text-muted);" >Personal space & notes</p>
-
-				</div>
-			</div>
-
-			<div style="position: relative;">
-				<button style="color: var(--text-muted);" onclick="toggleDMSetting()">
-					<span class="material-symbols-outlined">settings</span>
-				</button> 
-
-
-				<div id="dm-settings" class="dm-setting-dropdown">
-					<h4 style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px ;">Chat Theme</h4>
-
-					<button class="action-btn" style="margin: 0; padding: 8px;" onclick="changeChatBackground()">
-						<span class="material-symbols-outlined">images</span> Change Background
-					</button>
-				</div>
-			</div>
-		</div>
-
-		<div class="messeges-container">
-			<div class="message">This is your private DM to yourself</div>
-
-			<div class="message">The background is currently set to the main image</div>
-
-		</div>
-
-		<div class="input-area">
-			<div class="input-box">
-				<input type="text" placeholder="Message yourself...">
-				<button class="send-btn">
-					<span class="material-symbols-outlined">send</span>
-				</button>
-			</div>
-		</div>
-
-	</div>
-
-
-</div>
-
-
-<script>
-	function showScreen(screenId) {
-		document.querySelectorAll('.screen').forEach(screen => {
-			screen.classList.add('hidden');
-
-		});
-
-		document.getElementById(screenId).classList.remove('hidden');
-	}
-
-	let speed = 1;
-	function changeSpeed() {
-		speed = speed === 3 ? 1 : speed + 1;
-
-		document.getElementById('speed-btn').innerText = `Speed: ${speed}s`;
-	}
-
-	function toggleSettings() {
-		const overlay = document.getElementById('settings-overlay');
-		overlay.classList.toggle('open');
-	}
-
-	function toggleDotsMenu(menuId, event) {
-		event.stopPropagation();
-
-
-		document.querySelectorAll('.dots-dropdown').forEach(menu => {
-			if(menu.id !==menuId) menu.classList.remove('show');
-		});
-
-		const menu =document.getElementById(menuId);
-		menu.classList.toggle('show');
-
-	}
-
-	function toggleDMSetting() {
-		const manu  = document.getElementById('dm-setting');
-		menu.classList.toggle('show');
-
-	}
-
-	function changeChatBackground() {
-		const newUrl = prompt("Enter new image URL: ");
-		if(newUrl) {
-			document.getElementById('chat-by-layer').style.backgroundImage = `url('$(newUrl)')`;
-		}
-
-
-		document.getElementById('dm-settings').classList.remove('show');
-
-	}
-
-	document.addEventListener('click', function(event) {
-		if(!event.target.closest('.dots-btn')) {
-			document.querySelectorAll('.dots-dropdown').forEach(menu => {
-				menu.classList.remove('show');
-			});
-		}
-
-
-		if(!event.target.closest('#dm-settings') && !event.target.closest ('.chat-header button'))
-	{
-		document.getElementById('dm-settings').classList.remove('show');
-	}
-	});
-</script>
-
+ 
+  <div id="welcome-screen" class="screen">
+    
+    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2000&auto=format&fit=crop" class="welcome-img" alt="Welcome Image">
+    <button class="btn-primary" onclick="showScreen('dialogue-screen')">Continue</button>
+  </div>
+
+
+  
+  <div id="dialogue-screen" class="screen hidden">
+    <div class="dialogue-top">
+      <!--  Tplaceholder-->
+      <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2000&auto=format&fit=crop" class="dialogue-img" alt="Character">
+    </div>
+    
+    <div class="dialogue-bottom">
+      <h3 class="dialogue-name">Mysterious Entity</h3>
+      <p class="dialogue-text">Welcome to the interface. You have finally arrived. We have much to discuss, but first, you must enter the system...</p>
+      
+      <div class="dialogue-controls">
+        <button class="btn-secondary" id="speed-btn" onclick="changeSpeed()">Speed: 1x</button>
+        <button class="btn-primary" style="padding: 12px 24px;" onclick="showScreen('main-screen')">Continue Ahead</button>
+      </div>
+    </div>
+  </div>
+
+
+ 
+  <div id="main-screen" class="screen hidden">
+    
+    <!---->
+    <div class="taskbar">
+      <div class="logo">
+        <span class="material-symbols-outlined">forum</span>
+      </div>
+      
+      <button class="nav-btn" data-name="Explore" onclick="alert('Explore Public Groups')">
+        <span class="material-symbols-outlined">explore</span>
+      </button>
+
+
+      <button class="nav-btn" data-name="Music" onclick="alert('Connect Spotify')">
+        <span class="material-symbols-outlined">music_note</span>
+      </button>
+
+      <button class="nav-btn" data-name="Settings" onclick="toggleSettings()">
+        <span class="material-symbols-outlined">settings</span>
+      </button>
+
+      <button class="nav-btn" data-name="Reels" onclick="alert('Reels coming soon')">
+        <span class="material-symbols-outlined">movie</span>
+      </button>
+    </div>
+
+    
+    <div id="settings-overlay" class="settings-overlay">
+      <h2 style="margin-bottom: 25px;">Settings</h2>
+      
+      <div class="settings-block">
+        <h4 style="color: var(--text-muted); margin-bottom: 15px; font-size: 0.8rem;">SOCIAL STATS</h4>
+        <div class="settings-row">
+
+
+          <span style="display:flex; align-items:center;"><span class="material-symbols-outlined">group</span> Friends</span>
+          <span style="background:var(--accent); padding:2px 8px; border-radius:5px; font-size:0.8rem;">42</span>
+        </div>
+        <div class="settings-row" style="color: var(--danger);">
+
+          <span style="display:flex; align-items:center;"><span class="material-symbols-outlined">person_off</span> Blocked</span>
+          <span style="background:rgba(239, 68, 68, 0.2); padding:2px 8px; border-radius:5px; font-size:0.8rem;">3</span>
+        </div>
+      </div>
+
+      <div class="settings-block">
+        <h4 style="color: var(--text-muted); margin-bottom: 15px; font-size: 0.8rem;">GENERAL THEMES</h4>
+        <div style="display:flex; gap:10px;">
+
+          <div class="theme-circle" style="background:#0f1115; border: 2px solid var(--accent);"></div>
+          <div class="theme-circle" style="background:#ffffff;"></div>
+          <div class="theme-circle" style="background:#1e293b;"></div>
+        </div>
+      </div>
+
+
+
+      <div style="margin-top: 40px;">
+        <button class="action-btn">
+          <span class="material-symbols-outlined">logout</span> Logout
+        </button>
+        <button class="action-btn btn-danger">
+          <span class="material-symbols-outlined">delete_forever</span> Delete Account
+        </button>
+      </div>
+    </div>
+
+
+
+    <div class="chat-list-panel">
+      <div class="chat-list-header">Messages</div>
+      
+      <div class="chat-items">
+        <div class="chat-item you-dm" style="cursor: pointer;">
+          <div class="avatar">Y</div>
+          <div class="chat-info">
+            <h4>You</h4>
+            <p>Notes to self...</p>
+          </div>
+        </div>
+
+     
+        <div class="chat-item">
+          <div class="avatar">A</div>
+          <div class="chat-info">
+            <h4>Alex</h4>
+            <p>Hey are you there?</p>
+          </div>
+          <button class="dots-btn" onclick="toggleDotsMenu('menu-1', event)">
+            <span class="material-symbols-outlined">more_vert</span>
+          </button>
+          
+          <div id="menu-1" class="dots-dropdown">
+            <button>Mute</button>
+            <button style="color:var(--danger)">Delete</button>
+            <button style="color:var(--danger); font-weight:bold;">Block</button>
+          </div>
+        </div>
+
+      
+        <div class="chat-item">
+          <div class="avatar">S</div>
+          <div class="chat-info">
+            <h4>Sarah</h4>
+            <p>Let me know!</p>
+          </div>
+          <button class="dots-btn" onclick="toggleDotsMenu('menu-2', event)">
+            <span class="material-symbols-outlined">more_vert</span>
+          </button>
+          
+          <div id="menu-2" class="dots-dropdown">
+            <button>Mute</button>
+            <button style="color:var(--danger)">Delete</button>
+            <button style="color:var(--danger); font-weight:bold;">Block</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+ 
+    <div class="chat-area">
+   
+      <div class="chat-bg" id="chat-bg-layer"></div>
+
+  
+      <div class="chat-header">
+        <div style="display: flex; align-items: center; gap: 15px;">
+          <div class="avatar" style="background:var(--accent); margin:0;">Y</div>
+          <div>
+            <h3 style="font-size:1.1rem;">You</h3>
+            <p style="font-size:0.8rem; color:var(--text-muted);">Personal space & notes</p>
+          </div>
+        </div>
+
+        
+        <div style="position: relative;">
+          <button style="color: var(--text-muted);" onclick="toggleDMSettings()">
+            <span class="material-symbols-outlined">settings</span>
+          </button>
+
+          <div id="dm-settings" class="dm-settings-dropdown">
+            <h4 style="font-size:0.85rem; color:var(--text-muted); margin-bottom:10px;">Chat Theme</h4>
+            <button class="action-btn" style="margin:0; padding:8px;" onclick="changeChatBackground()">
+              <span class="material-symbols-outlined">image</span> Change Background
+            </button>
+          </div>
+        </div>
+      </div>
+
+     
+      <div class="messages-container">
+        <div class="message">This is my private DM to myself. I can save links and notes here!</div>
+        <div class="message">The background is currently set to the main image.</div>
+      </div>
+
+      
+      <div class="input-area">
+        <div class="input-box">
+          <input type="text" placeholder="Message yourself...">
+          <button class="send-btn">
+            <span class="material-symbols-outlined">send</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+
+    function showScreen(screenId) {
+      document.querySelectorAll('.screen').forEach(screen => {
+        screen.classList.add('hidden');
+      });
+      document.getElementById(screenId).classList.remove('hidden');
+    }
+
+    
+    let speed = 1;
+    function changeSpeed() {
+      speed = speed === 3 ? 1 : speed + 1;
+      document.getElementById('speed-btn').innerText = `Speed: ${speed}x`;
+    }
+
+  
+    function toggleSettings() {
+      const overlay = document.getElementById('settings-overlay');
+      overlay.classList.toggle('open');
+    }
+
+   
+    function toggleDotsMenu(menuId, event) {
+      event.stopPropagation(); // Prevents clicking the chat item itself
+      
+     
+      document.querySelectorAll('.dots-dropdown').forEach(menu => {
+        if(menu.id !== menuId) menu.classList.remove('show');
+      });
+      
+     
+      const menu = document.getElementById(menuId);
+      menu.classList.toggle('show');
+    }
+
+   
+    function toggleDMSettings() {
+      const menu = document.getElementById('dm-settings');
+      menu.classList.toggle('show');
+    }
+
+   
+    function changeChatBackground() {
+      const newUrl = prompt("Enter new image URL:");
+      if(newUrl) {
+        document.getElementById('chat-bg-layer').style.backgroundImage = `url('${newUrl}')`;
+      }
+     
+      document.getElementById('dm-settings').classList.remove('show');
+    } document.addEventListener('click', function(event) {
+      // clse dots menus
+      if(!event.target.closest('.dots-btn')) {
+        document.querySelectorAll('.dots-dropdown').forEach(menu => {
+          menu.classList.remove('show');
+        });
+      }
+      if(!event.target.closest('#dm-settings') && !event.target.closest('.chat-header button')) {
+        document.getElementById('dm-settings').classList.remove('show');
+      }
+    });
+  </script>
 </body>
 </html>
-
