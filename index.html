@@ -245,12 +245,15 @@
       margin-bottom: 20px;
     }
 
+
+
     .settings-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 10px;
     }
+
     .settings-row .material-symbols-outlined { font-size: 18px; margin-right: 8px;}
     
     .theme-circle { width: 30px; height: 30px; border-radius: 50%; cursor: pointer;}
@@ -471,6 +474,8 @@
   </div>
 
 
+
+
  
   <div id="main-screen" class="screen hidden">
     
@@ -503,6 +508,8 @@
       <h2 style="margin-bottom: 25px;">Settings</h2>
       
       <div class="settings-block">
+
+
         <h4 style="color: var(--text-muted); margin-bottom: 15px; font-size: 0.8rem;">SOCIAL STATS</h4>
         <div class="settings-row">
 
@@ -530,6 +537,7 @@
 
 
       <div style="margin-top: 40px;">
+
         <button class="action-btn">
           <span class="material-symbols-outlined">logout</span> Logout
         </button>
@@ -560,6 +568,7 @@
             <h4>Alex</h4>
             <p>Hey are you there?</p>
           </div>
+
           <button class="dots-btn" onclick="toggleDotsMenu('menu-1', event)">
             <span class="material-symbols-outlined">more_vert</span>
           </button>
@@ -589,6 +598,7 @@
           </div>
         </div>
 
+
       </div>
     </div>
 
@@ -609,6 +619,7 @@
 
         
         <div style="position: relative;">
+
           <button style="color: var(--text-muted);" onclick="toggleDMSettings()">
             <span class="material-symbols-outlined">settings</span>
           </button>
@@ -639,6 +650,7 @@
       </div>
 
     </div>
+
   </div>
 
   <script>
@@ -665,7 +677,8 @@
 
    
     function toggleDotsMenu(menuId, event) {
-      event.stopPropagation(); // Prevents clicking the chat item itself
+
+      event.stopPropagation(); // 
       
      
       document.querySelectorAll('.dots-dropdown').forEach(menu => {
